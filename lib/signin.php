@@ -18,7 +18,7 @@
 
 			//read from database
 			$query = "select * from farmers where name = '$name' ";
-			$result = mysqli_query($query);
+			$result = mysqli_query($con,$query);
 
 			
 				
