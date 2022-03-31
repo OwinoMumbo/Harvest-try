@@ -13,9 +13,10 @@
 		$name = $_POST['name'];
         $surname = $_POST['surname'];
         $contact_no = $_POST['contact_no'];
+		$confirmpassword =  $_POST['confirmpassword'];
 		$password = $_POST['password'];
 
-		if(!empty($email) && !empty($name) && !empty($surname) && !empty($password) !empty($contact_no)&& !is_numeric($name) && is_numeric($contact_no))
+		if(!empty($email) && !empty($name) && !empty($surname) &&  && !empty($confirm_password)  !empty($password) !empty($contact_no)&& !is_numeric($name) && is_numeric($contact_no))
 		{
 
 			//save to database
