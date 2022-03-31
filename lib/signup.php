@@ -24,7 +24,7 @@
 
 			mysqli_query($con, $query);
 
-			header("Location: sign.php"); // directed to sign in if signup is a success.
+			header("Location: signin.php"); // directed to sign in if signup is a success.
 			die;
 		}else
 		{
