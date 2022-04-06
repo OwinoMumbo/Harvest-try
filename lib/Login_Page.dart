@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
+// ignore: file_names
+//ignore : prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'Constant_Colors.dart' as colors;
-
+import 'create_log.dart';
 import 'InputboxClass.dart';
 import 'Register_Page.dart';
 
@@ -54,7 +54,7 @@ class _Login extends State<Login>{
                               borderRadius: const BorderRadius.all(Radius.circular(30),),
                               child: ElevatedButton(
                                 onPressed: () {
-                                 //Navigator.push(context, MaterialPageRoute(builder: (context){return const NameOfThePage();},),);
+                                 Navigator.push(context, MaterialPageRoute(builder: (context){return const createL();},),);
                               },
 
                               child: const Text("LOGIN")),
@@ -82,10 +82,11 @@ class _Login extends State<Login>{
 
                         const InkWell(
                           child: Text("Forgot your password, reset Here!",style: TextStyle(color: Colors.blue,),),
-                            //onTap: (){
+                            //sizedbox
+                          //onTap: (){
                           //Navigator.push(context, MaterialPageRoute(builder: (context){return const NameOfThePage();},),);
-                            //},
-                       ),//sizedbox
+                          //},
+                        ),//sizedbox
 
                       ],//children
 
