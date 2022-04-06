@@ -21,7 +21,7 @@ class _joinL extends State<joinL>{
     return Scaffold(
       appBar: AppBar(
         backgroundColor:Colors.green,
-        title: const Text("JOIN LOG"),
+        title: const Text("Join Log"),
       ),
 
       body: Padding(
@@ -46,7 +46,7 @@ class _joinL extends State<joinL>{
                     const TextField(
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          hintText:"Enter Log ID/Link"
+                          hintText:"Enter Log code"
                       ),
                     ),
 

@@ -10,14 +10,12 @@ import 'package:harvest/addtolog.dart';
 import 'package:harvest/main.dart';
 import 'Constant_Colors.dart' as colors;
 
-void main() {
-  runApp(const MyApp());
-}
+
 
 String dropdownvalue = 'Select Food';
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class AddToLog extends StatelessWidget {
+  const AddToLog({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,7 +39,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 //   // Initial Selected Value
   String dropdownvalue = 'Select Food';
-  String dropdownvalue2 = 'Select Type';
+
 
 //   // List of items in our dropdown menu
   var items = [
@@ -103,17 +101,29 @@ class _MyHomePageState extends State<MyHomePage> {
     'Turntip',
     'Zucchini'
   ];
-//  var types = ['leaves', 'itype', 'ne type', 'Select Type'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add to Log"),
       ),
-      body: Center(
-        child: Column(
+      body: Padding(
+      padding: EdgeInsets.only( top: /*MediaQuery.of(context).size.height * 0.15*/ 0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize : MainAxisSize.max,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.80,
+
+
+         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: 30),
+
             DropdownButton(
               // Initial Value
 
@@ -137,62 +147,34 @@ class _MyHomePageState extends State<MyHomePage> {
                 });
               },
             ),
-            //          DropdownButton(
-            // Initial Value
-            //          value: dropdownvalue2,
 
-//                   // Down Arrow Icon
-            //        icon: const Icon(Icons.keyboard_arrow_down),
-
-//                   // Array list of items
-            //       items: types.map((String types) {
-            //        return DropdownMenuItem(
-            //        value: types,
-            //       child: Text(types),
-            //      );
-            //   }).toList(),
-//                   // After selecting the desired option,it will
-//                   // change button value to selected value
-            //   onChanged: (String? newValue2) {
-            //     setState(() {
-            //       dropdownvalue2 = newValue2!;
-            //     });
-            //   },
-            //  ), // close drop down value
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.80,
-              height: 50,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(30),
-                ),
-                child: ElevatedButton(
-                    onPressed: () {
-                      //Navigator.push(context, MaterialPageRoute(builder: (context){return const NameOfThePage();},),);
-                    },
-                    child: const Text("WEIGHT")),
+            SizedBox(height: 10),
+            const TextField(
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText:"Weight"
               ),
-            ), //sizedbox
-
+            ),
             SizedBox(height: 30),
 
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.80,
-              height: 50,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(30),
-                ),
-                child: ElevatedButton(
-                    onPressed: () {
-                      //Navigator.push(context, MaterialPageRoute(builder: (context){return const NameOfThePage();},),);
-                    },
-                    child: const Text("DATE")),
+            SizedBox(height: 10),
+            const TextField(
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText:"Date"
               ),
-            ), //sizedbox
+            ),
 
             SizedBox(height: 30),
+            SizedBox(height: 10),
+            const TextField(
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText:"Quantity"
+              ),
+            ),
 
+              SizedBox(height: 30),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.80,
               height: 50,
@@ -204,13 +186,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       //Navigator.push(context, MaterialPageRoute(builder: (context){return const NameOfThePage();},),);
                     },
-                    child: const Text("QUANTITY")),
+                    child: const Text("ADD")),
               ),
             ), //sizedbox
 
             SizedBox(height: 30),
           ],
         ),
+
+          ),
+            ],
+        ),
+      ),
       ),
     );
   }

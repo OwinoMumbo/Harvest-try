@@ -17,70 +17,62 @@ class _RegisterPage extends State<RegisterPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: const Color.fromARGB(255, 78, 113, 165),
-      backgroundColor:  colors.AppColors.backgroundColor,
+
+      appBar: AppBar(
+        backgroundColor:Colors.green,
+        title: const Text("Register Page"),
+      ),
       body: Padding(
-        padding: EdgeInsets.only(top: 10),
+        padding: EdgeInsets.only( top: /*MediaQuery.of(context).size.height * 0.15*/ 0),
         child: Center(
-          child: SingleChildScrollView(
-            
-            child: Column(
-              children: [
-
-              const SizedBox( height: 10,),
-
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize : MainAxisSize.max,
+            children: [
               SizedBox(
-                //width: 300,
                 width: MediaQuery.of(context).size.width * 0.80,
-                //height: MediaQuery.of(context).size.height * 0.1,
                 child: Column(
-                  children: <Widget>[
-                    // const Padding(padding: EdgeInsets.only(top: 20)),
+                  children: [
 
-                    // Input for user email
-                    Positioned(
-                      child: DetailsInputBox(hintText: "Email",prefixIcon: Icon(Icons.email,color: colors.AppColors.iconColor,)),
+                    SizedBox(height: 10),
+                    const TextField(
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText:"First Name"
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    const TextField(
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Last Name"
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    const TextField(
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Email"
+                      ),
                     ),
 
-                    const SizedBox( height: 10,),
-
-                    // Input for the users first name
-                    Positioned(
-                      child: DetailsInputBox(hintText: "First name",prefixIcon: Icon(Icons.drive_file_rename_outline,color: colors.AppColors.iconColor,)),
+                    SizedBox(height: 10),
+                    const TextField(
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Password"
+                      ),
                     ),
 
-                    const SizedBox( height: 10,),
-
-                    // Input for the users last name
-                    Positioned(
-
-                      child: DetailsInputBox(hintText: "Last name",prefixIcon: Icon(Icons.drive_file_rename_outline,color: colors.AppColors.iconColor,)),
+                    SizedBox(height: 10),
+                    const TextField(
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Confirm Password"
+                      ),
                     ),
 
-                    const SizedBox( height: 10,),
-
-                    // Input for the users Id number
-                    Positioned(
-                      child: DetailsInputBox(hintText: "Cellphone number",prefixIcon: Icon(Icons.phone_android_outlined,color: colors.AppColors.iconColor,)),
-                    ),
-
-                    const SizedBox( height: 10,),
-
-                    //const Padding(padding: EdgeInsets.only(top: 15,)),
-                    const Positioned(
-                      child: PasswordInputBox(hintText: "Password",),
-
-                    ),
-
-                    const SizedBox( height: 10,),
-
-                    const Positioned(
-                      child: PasswordInputBox(hintText: "Confirm Password",),
-
-                    ),
-
-                    const SizedBox( height: 30,),
-
+                    SizedBox(height: 30),
 
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.80,
@@ -88,31 +80,32 @@ class _RegisterPage extends State<RegisterPage>{
                       child: ClipRRect(
                           borderRadius: const BorderRadius.all(Radius.circular(30),),
                           child: ElevatedButton(
-                              onPressed: () {
-                                //Navigator.push(context, MaterialPageRoute(builder: (context){return const NameOfThePage();},),);
-                              },
-                              child: const Text("REGISTER"),
-                              style: ElevatedButton.styleFrom(primary: Colors.black26,textStyle: const TextStyle(color: Colors.black,fontSize: 20,))
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.green,
+                            ),
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context){return const RegisterPage();},),);
+                            },
+                            child: const Text("REGISTER"),
+                            // style: ElevatedButton.styleFrom(primary: Colors.black26,textStyle: const TextStyle(color: Colors.black,fontSize: 20,))
                           )
                       ),
-                    ),
+                    ),//sizedbox
+                  ],//children
 
-                  ],
-                ),
+                ),//Column
 
 
-              ),
+              ),//sizedbox
 
-          ],
-            ),
-            
-          ),
+            ],//children
 
-        )
+          ),//column
 
-     
-     
-      ),
+        ),//center
+
+      ),//padd
+
     );
   }
 
