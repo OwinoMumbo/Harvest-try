@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harvest/HomePage.dart';
-
+import 'package:harvest/Deco_design.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:harvest/Login_Page.dart';
 import 'package:harvest/Register_Page.dart';
 import 'package:harvest/addtolog.dart';
@@ -30,9 +31,10 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const RegisterPage(),
+      home: const Login(),
     );
   }
 }
