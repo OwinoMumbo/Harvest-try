@@ -1,3 +1,6 @@
+
+[![CircleCI](https://circleci.com/gh/GunPointCoders/harvest/tree/main.svg?style=svg)](https://circleci.com/gh/GunPointCoders/harvest/tree/main)
+
 [![codecov](https://codecov.io/gh/GunPointCoders/harvest/branch/master/graph/badge.svg?token=1AYMUTWEBR)](https://codecov.io/gh/GunPointCoders/harvest)
 
 # harvest
