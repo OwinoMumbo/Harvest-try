@@ -2,8 +2,11 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'join_log.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class createL extends StatefulWidget{
@@ -14,7 +17,13 @@ class createL extends StatefulWidget{
   _createL createState() => _createL();
 }
 
+var LogName;
+
 class _createL extends State<createL>{
+
+  TextEditingController logname = TextEditingController();
+  final GlobalKey<FormState> _globalkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
 
@@ -38,37 +47,20 @@ class _createL extends State<createL>{
                   children: [
 
                     SizedBox(height: 10),
-                    const TextField(
+                    TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: logname,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           hintText:"Enter Log Name"
                       ),
+                      validator: (String? value){
+                        if(value!.isEmpty){
+                          return 'enter valid log name';
+                        }
+                        return null;
+                      }
                     ),
-                    SizedBox(height: 10),
-                    const TextField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Enter log location"
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    const TextField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Enter number of members"
-                      ),
-                    ),
-
-                    SizedBox(height: 10),
-                    const TextField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Enter your log code"
-                      ),
-                    ),
-
-                    SizedBox(height: 30),
-
 
                     SizedBox(height: 30),
 
@@ -81,8 +73,35 @@ class _createL extends State<createL>{
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.green,
                               ),
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context){return const joinL();},),);
+                              onPressed: () async {
+                                if (_globalkey.currentState!.validate()) {
+                                  LogName = logname.text;
+
+
+                                  final prefs = await SharedPreferences.getInstance();
+                                  final String? farmer_id = prefs.getString('farmer_id');
+
+                                  print(farmer_id);
+
+
+                                  var finalRes;
+                                  http.Response response = await http.post(Uri.parse("http://10.100.15.123/createlog.php"),
+                                      body: ({
+                                        'log_name': LogName,
+                                        'farmer_id' : farmer_id
+                                      })
+
+                                  );
+                                  if(response.statusCode == 200){
+                                    finalRes = response.body;
+                                    print(finalRes);
+                                  }
+
+                                  Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return const joinL();
+                                    },),);
+                                }
                               },
                               child: const Text("CREATE LOG"),
                              // style: ElevatedButton.styleFrom(primary: Colors.black26,textStyle: const TextStyle(color: Colors.black,fontSize: 20,))

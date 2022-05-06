@@ -1,6 +1,9 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:harvest/ViewLog.dart';
+import 'package:harvest/create_log.dart';
+import 'package:harvest/join_log.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -44,7 +47,7 @@ class _HomePage extends State<HomePage> {
                               primary: Colors.green,
                             ),
                             onPressed: () {
-                              //Navigator.push(context, MaterialPageRoute(builder: (context){return const NameOfThePage();},),);
+                              Navigator.push(context, MaterialPageRoute(builder: (context){return const ViewLog();},),);
                             },
                             child: const Text("View Logs")),
                       ),
@@ -62,7 +65,7 @@ class _HomePage extends State<HomePage> {
                               primary: Colors.green,
                             ),
                             onPressed: () {
-                              //Navigator.push(context, MaterialPageRoute(builder: (context){return const NameOfThePage();},),);
+                              Navigator.push(context, MaterialPageRoute(builder: (context){return const createL();},),);
                             },
                             child: const Text("Add New")),
                       ),
@@ -81,7 +84,7 @@ class _HomePage extends State<HomePage> {
                               primary: Colors.green,
                             ),
                             onPressed: () {
-                              //Navigator.push(context, MaterialPageRoute(builder: (context){return const NameOfThePage();},),);
+                              Navigator.push(context, MaterialPageRoute(builder: (context){return const joinL();},),);
                             },
                             child: const Text("Join Existing Log")),
                       ),
