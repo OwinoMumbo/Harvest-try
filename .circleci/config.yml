@@ -15,7 +15,7 @@ Fetch-code:
     -run:flutter doctor
 workflows:
   version: 2
-  dart workflow: # this is the name of our workflow
+  Harvest: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
       - build
       
