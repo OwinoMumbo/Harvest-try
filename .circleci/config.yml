@@ -1,6 +1,6 @@
 version: 2
 jobs:
-   build-and-test:
+  build:
     docker:
       - image: cirrusci/flutter
     steps:
@@ -8,9 +8,3 @@ jobs:
       - run: flutter doctor
       - run: flutter test 
       - run: flutter -v build apk
-      
-workflows:
-  sample: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
-    jobs:
-      - build-and-test
