@@ -3,8 +3,7 @@ version: 2.1
 orbs:
   flutter: circleci/flutter@1.1.0
   orb-tools: circleci/orb-tools@10.0
-  dart-tester-orb: emem365/dart-tester-orb@1.2.0
-
+  
 parameters:
  run-integration-tests:
    description: An internal flag to prevent integration test from running before a development version has been created
