@@ -1,31 +1,101 @@
 version: 2.1
 
 orbs:
-  flutter: circleci/flutter@1.1.0
-  orb-tools: circleci/orb-tools@10.0
-  
-parameters:
- run-integration-tests:
-   description: An internal flag to prevent integration test from running before a development version has been created
-   type: boolean
-   default: false
+  android: circleci/android@2.0.0
+  flutter-orb: circleci/flutter@1.0.1
+  ruby: circleci/ruby@1.6.0
+  macos: circleci/macos@2.1.0
 
 jobs:
-  build:
-    docker:
-      - image: cirrusci/flutter
+  integration_test_android:
+    executor:
+      name: android/android-machine
+      resource-class: xlarge
+      tag: 2022.03.1
     steps:
       - checkout
-      - run: flutter doctor
-    # fetching code from repo
-Fetch-code:
-  docker:
-    -image:cirrus/flutter
-  steps:
-    -checkout
-    -run:flutter doctor
+      - flutter-orb/install_sdk_and_pub:
+          cache-version: machine
+          flutter_version: 2.10.3
+      - android/create-avd:
+          avd-name: flutter
+          install: true
+          system-image: system-images;android-29;default;x86
+      - android/start-emulator:
+          avd-name: flutter
+          post-emulator-launch-assemble-command: 'flutter build apk --debug'
+          restore-gradle-cache-find-args: ./android -name 'build.gradle'
+      - android/run-tests:
+          test-command: flutter drive --target=test_driver/app.dart
+      - store_artifacts:
+          path: ozzie
+
+  distribute_android:
+    executor:
+      name: android/android-docker
+      resource-class: xlarge
+      tag: 2022.03.1
+    steps:
+      - checkout
+      - flutter-orb/install_sdk_and_pub:
+          cache-version: docker
+          flutter_version: 2.10.3
+      - flutter-orb/install_android_gradle
+      - ruby/install-deps:
+          app-dir: android
+          key: android
+      - run:
+          command: bundle exec fastlane distribute_debug
+          working_directory: android
+
+  integration_test_ios:
+    macos:
+      xcode: 13.3.0
+    resource_class: large
+    steps:
+      - checkout
+      - macos/preboot-simulator:
+          device: iPhone 13
+          version: "15.4"
+      - flutter-orb/install_sdk_and_pub:
+          flutter_version: 2.10.3
+      - flutter-orb/install_ios_pod
+      - run:
+          name: Integration Test
+          command: flutter drive --target=test_driver/app.dart
+      - store_artifacts:
+          path: ozzie
+
+  distribute_ios:
+    macos:
+      xcode: 13.3.0
+    resource_class: large
+    steps:
+      - checkout
+      - flutter-orb/install_sdk_and_pub:
+          flutter_version: 2.10.3
+      - flutter-orb/install_ios_pod
+      - ruby/install-deps:
+          app-dir: ios
+          key: ios
+      - run:
+          command: bundle exec fastlane distribute_debug
+          working_directory: ios
+
 workflows:
-  harvest: # this is the name of our workflow
-    jobs: # and here we list the jobs we are going to run.
-      - build
-      
+  test_and_distribute:
+    jobs:
+      - flutter-orb/unit_test:
+          version: 2.10.3
+      - flutter-orb/lint:
+          version: 2.10.3
+      - integration_test_ios
+      - distribute_ios:
+          context:
+            - mobile
+      - integration_test_android
+      - distribute_android:
+          context: # Context
+            - mobile
+
+        
