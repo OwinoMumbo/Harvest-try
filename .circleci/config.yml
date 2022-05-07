@@ -2,13 +2,20 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cimg/base:stable
+      - image: cirrusci/flutter
     steps:
       - checkout
       - run: flutter doctor
+    # fetching code from repo
+Fetch-code:
+  docker:
+    -image:cirrus/flutter
+  steps:
+    -checkout
+    -run:flutter doctor
 workflows:
   version: 2
   dart workflow: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
       - build
-    
+      
