@@ -2,14 +2,13 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cirrusci/flutter
+      - image: cimg/base:stable
     steps:
       - checkout
       - run: flutter doctor
-    # Under the workflows: map, we can coordinate our two jobs, defined above.
 workflows:
   version: 2
   dart workflow: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
       - build
-      
+    
