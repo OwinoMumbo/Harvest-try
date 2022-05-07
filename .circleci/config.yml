@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 
 orbs:
   flutter: circleci/flutter@1.1.0
@@ -25,7 +25,7 @@ Fetch-code:
     -checkout
     -run:flutter doctor
 workflows:
-  version: 2.1
+  version: 2
   harvest: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
       - build
