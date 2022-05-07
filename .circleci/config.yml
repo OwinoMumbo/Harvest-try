@@ -1,4 +1,15 @@
-version: 2
+version: 2.1
+
+orbs:
+  flutter: circleci/flutter@1.1.0
+  orb-tools: circleci/orb-tools@10.0
+
+parameters:
+ run-integration-tests:
+   description: An internal flag to prevent integration test from running before a development version has been created
+   type: boolean
+   default: false
+
 jobs:
   build:
     docker:
