@@ -1,52 +1,179 @@
-version: 2.1
-orbs:
-       android: circleci/android@1.0.3
-       flutter: circleci/flutter@1.0
-jobs: 
-  build:
-   docker:
-     -image: cirrusci/flutter
-   steps:
-     -checkout
-     -flutter/install_sdk_and_pub
-     -run:flutter doctor
-Fetch-code:
-  docker:
-    -image: cirrusci/flutter
-  steps:
-    -checkout
-    -flutter/install_sdk_and_pub
+version: 2
+jobs:
+   android_tests:
+    working_directory: ~/project/example/android
+    macos:
+      xcode: "12.3.0"
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Install JAVA
+          command: |
+            HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask homebrew/cask-versions/adoptopenjdk8
+      - run:
+          name: Install Android sdk
+          command: |
+            HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask android-sdk
+      - run:
+          name: Setup environment variables
+          command: |
+            echo 'export PATH="$PATH:/usr/local/opt/node@8/bin:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin:/usr/local/share/android-sdk/tools/bin"' >> $BASH_ENV
+            echo 'export JAVA_HOME=`/usr/libexec/java_home -v 1.8`' >> $BASH_ENV
+            echo 'export ANDROID_HOME="/usr/local/share/android-sdk"' >> $BASH_ENV
+            echo 'export ANDROID_SDK_HOME="/usr/local/share/android-sdk"' >> $BASH_ENV
+            echo 'export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"' >> $BASH_ENV
+            echo 'export QEMU_AUDIO_DRV=none' >> $BASH_ENV
+            echo 'export PATH="$PATH:~/flutter/bin"'  >> $BASH_ENV
+      - run:
+          name: Install emulator dependencies
+          command: (yes | sdkmanager "platform-tools" "platforms;android-26" "extras;intel;Hardware_Accelerated_Execution_Manager" "build-tools;26.0.0" "system-images;android-26;google_apis;x86" "emulator" --verbose) || true
+      - run:
+          name: chmod permissions
+          command: chmod +x ./gradlew
+      - run: avdmanager create avd -n Pixel_2_API_26 -k "system-images;android-26;google_apis;x86" -g google_apis -d "Nexus 5"
+      - run:
+          name: Run emulator in background
+          command: /usr/local/share/android-sdk/tools/emulator @Pixel_2_API_26 -noaudio -no-boot-anim -no-window
+          background: true
+      - run:
+          name: download flutter SDK
+          command: if ! test -f "~/flutter_sdk.zip"; then curl -o ~/flutter_sdk.zip https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_2.2.3-stable.zip; fi
+      - run:
+          name: unzip flutter SDK
+          command: unzip ~/flutter_sdk.zip -d ~
+      - run: flutter doctor
+      - run: 
+          name: Flutter build
+          command: cd ..; flutter build apk
+      - run:
+          name: Download Android Dependencies
+          command: ./gradlew androidDependencies
+      - run:
+          name: Run Unit Tests
+          command: ./gradlew test
+      # - run:
+      #     name: Run UI Tests
+      #     command: ./gradlew app:connectedAndroidTest
+
+   flutter_tests:
+    docker:
+      - image: cirrusci/flutter
+    steps:
+      - checkout
+      - run: sudo gem install bundler:1.16.1
+      - run: bundle check || sudo bundle install        
+      - run: bundle exec danger
+      - run: flutter doctor
+      - run: flutter packages get
+      - run: flutter pub run build_runner build --delete-conflicting-outputs
+      - run: flutter test --coverage
+      - run: bash <(curl -s https://codecov.io/bash)
+      - run: dartanalyzer --options analysis_options.yaml --fatal-warnings lib
+      - run: flutter pub publish --dry-run
+
+   flutter_tests_2.2.3:
+    docker:
+      - image: cirrusci/flutter:2.2.3
+    steps:
+      - checkout
+      - run: sudo gem install bundler:1.16.1
+      - run: bundle check || sudo bundle install        
+      - run: bundle exec danger
+      - run: flutter doctor
+      - run: flutter packages get
+      - run: flutter pub run build_runner build --delete-conflicting-outputs
+      - run: flutter test --coverage
+
+   ios_tests:
+    macos:
+      xcode: "12.3.0"
+    working_directory: ~/project/example
+    environment:
+      FL_OUTPUT_DIR: output
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Install CocoaPods
+          command: sudo gem install cocoapods
+      - run:
+          name: download flutter SDK
+          command: if ! test -f "~/flutter_sdk.zip"; then curl -o ~/flutter_sdk.zip https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_2.2.3-stable.zip; fi
+      - run:
+          name: unzip flutter SDK
+          command: unzip ~/flutter_sdk.zip -d ~
+      - run:
+          name: export flutter path
+          command: echo 'export PATH="$PATH:~/flutter/bin"'  >> $BASH_ENV
+      - run: flutter doctor
+      - run: flutter pub get
+      - run:
+          name: Install Pods
+          command: cd ios && pod install --repo-update
+      - run:
+          name: Build and run tests
+          command: cd ios && xcodebuild  -allowProvisioningUpdates   -workspace Runner.xcworkspace   -scheme Runner   -sdk iphonesimulator   -destination 'platform=iOS Simulator,name=iPhone 12 Pro Max,OS=14.3'   test | xcpretty
+
+   pub_release:
+    docker:
+      - image: cirrusci/flutter
+    steps:
+      - checkout
+      - run: chmod +x ./release.sh
+      - run: ./release.sh
+
+   gh_ibg_release:
+    macos:
+      xcode: "12.5.1"
+    working_directory: "~"
+    steps:
+      - checkout:
+          path: ~/project
+      - run: git clone https://InstabugCI:$RELEASE_GITHUB_TOKEN@github.com/Instabug/Escape.git
+      - run: cd Escape && swift build -c release
+      - run: cd Escape/.build/release && cp -f Escape /usr/local/bin/escape
+      - run: cd project && Escape flutter publish
+      
 workflows:
   version: 2
-  build: # this is the aname of our workflow
-  jobs:# and here we list jobs we are running
-   -build
-
-install_sdk_and_pub:
-        description: |
-            Install Flutter SDK and your flutter packages with automated caching and best practices applied. Requires lock file.
-        parameters:
-            app-dir:
-                default: .
-                description: Path to the directory containing your pubspec.yaml file. Not needed if pubspec.yaml lives in the root.
-                type: string
-            cache-version:
-                default: v1
-                description: Change the default cache version if you need to clear the cache for any reason.
-                type: string
-            flutter_version:
-                default: 2.2.3
-                description: The target version for the Flutter SDK.
-                type: string
-            install-location:
-                default: ~/development
-                description: Install path for the Flutter binaries.
-                type: string
-        steps:
-            - install_sdk:
-                install-location: <<parameters.install-location>>
-                version: <<parameters.flutter_version>>
-            - install_pub:
-                app-dir: <<parameters.app-dir>>
-                cache-version: <<parameters.app-dir>>
-
+  build-test-and-approval-deploy:
+    jobs:
+      - flutter_tests
+      - flutter_tests_2.2.3
+      - android_tests
+      - ios_tests
+      - hold_pub_release:
+          type: approval
+          requires:
+            - flutter_tests
+            - flutter_tests_2.2.3
+            - android_tests
+            - ios_tests
+          filters:
+            branches:
+              only: master
+      - pub_release:
+          requires:
+            - hold_pub_release
+          filters:
+            branches:
+              only: master
+      - hold_gh_ibg_release:
+          type: approval
+          requires:
+            - flutter_tests
+            - flutter_tests_2.2.3
+            - android_tests
+            - ios_tests
+          filters:
+            branches:
+              only: master
+      - gh_ibg_release:
+          requires:
+            - hold_gh_ibg_release
+          filters:
+            branches:
+              only: master
