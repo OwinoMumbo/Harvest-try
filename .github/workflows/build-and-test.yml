@@ -47,12 +47,6 @@ jobs:
         with:
           channel: ${{ matrix.dart-version }}
 
-      - name: Setup Flutter ${{ matrix.flutter-version }}
-        id: flutter
-        if: "!startsWith(matrix.bot, 'dart')"
-        uses: DanTup/gh-actions/setup-flutter@master
-        with:
-          channel: ${{ matrix.flutter-version }}
       
       - run: flutter update-packages
         if: matrix.bot == 'flutter_repo'
