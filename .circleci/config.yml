@@ -1,0 +1,28 @@
+version: 2.1
+
+orbs:
+
+  flutter-orb: circleci/flutter@1.0.1
+
+jobs:
+  build:
+    docker:
+      - image: cirrusci/flutter
+    steps:
+      - checkout
+      - flutter-orb/install_sdk_and_pub:
+          cache-version: docker
+          flutter_version: 2.10.3
+      - flutter-orb/install_android_gradle
+      - run: flutter doctor
+      - run: flutter test
+      - run: flutter -v build apk
+
+workflows:
+  harvest: #this is the name of our workflows
+    jobs:
+      - flutter-orb/unit_test:
+          version: 2.10.3
+      - flutter-orb/lint:
+          version: 2.10.3
+      - build
