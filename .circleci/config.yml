@@ -15,7 +15,9 @@ jobs:
           flutter_version: 2.10.3
       - flutter-orb/install_android_gradle
       - run: flutter doctor
-
+      - run: flutter test 
+      - run: flutter -v build apk
+       
 workflows:
   harvest: #this is the name of our workflows
     jobs:
