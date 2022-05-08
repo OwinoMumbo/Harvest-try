@@ -10,8 +10,6 @@ import 'package:harvest/addtolog.dart';
 import 'package:harvest/main.dart';
 import 'Constant_Colors.dart' as colors;
 
-
-
 String dropdownvalue = 'Select Food';
 
 class AddToLog extends StatelessWidget {
@@ -39,7 +37,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 //   // Initial Selected Value
   String dropdownvalue = 'Select Food';
-
 
 //   // List of items in our dropdown menu
   var items = [
@@ -109,95 +106,87 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text("Add to Log"),
       ),
       body: Padding(
-      padding: EdgeInsets.only( top: /*MediaQuery.of(context).size.height * 0.15*/ 0),
+        padding: EdgeInsets.only(
+            top: /*MediaQuery.of(context).size.height * 0.15*/ 0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize : MainAxisSize.max,
+            mainAxisSize: MainAxisSize.max,
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.80,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 30),
 
+                    DropdownButton(
+                      // Initial Value
 
-         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 30),
+                      value: dropdownvalue,
 
-            DropdownButton(
-              // Initial Value
+                      // Down Arrow Icon
+                      icon: const Icon(Icons.keyboard_arrow_down),
 
-              value: dropdownvalue,
+                      // Array list of items
+                      items: items.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      // After selecting the desired option,it will
+                      // change button value to selected value
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownvalue = newValue!;
+                        });
+                      },
+                    ),
 
-              // Down Arrow Icon
-              icon: const Icon(Icons.keyboard_arrow_down),
+                    SizedBox(height: 10),
+                    const TextField(
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), hintText: "Weight"),
+                    ),
+                    SizedBox(height: 30),
 
-              // Array list of items
-              items: items.map((String items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
-                );
-              }).toList(),
-              // After selecting the desired option,it will
-              // change button value to selected value
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownvalue = newValue!;
-                });
-              },
-            ),
+                    SizedBox(height: 10),
+                    const TextField(
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), hintText: "Date"),
+                    ),
 
-            SizedBox(height: 10),
-            const TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText:"Weight"
-              ),
-            ),
-            SizedBox(height: 30),
+                    SizedBox(height: 30),
+                    SizedBox(height: 10),
+                    const TextField(
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), hintText: "Quantity"),
+                    ),
 
-            SizedBox(height: 10),
-            const TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText:"Date"
-              ),
-            ),
+                    SizedBox(height: 30),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.80,
+                      height: 50,
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              //Navigator.push(context, MaterialPageRoute(builder: (context){return const NameOfThePage();},),);
+                            },
+                            child: const Text("ADD")),
+                      ),
+                    ), //sizedbox
 
-            SizedBox(height: 30),
-            SizedBox(height: 10),
-            const TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText:"Quantity"
-              ),
-            ),
-
-              SizedBox(height: 30),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.80,
-              height: 50,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(30),
+                    SizedBox(height: 30),
+                  ],
                 ),
-                child: ElevatedButton(
-                    onPressed: () {
-                      //Navigator.push(context, MaterialPageRoute(builder: (context){return const NameOfThePage();},),);
-                    },
-                    child: const Text("ADD")),
               ),
-            ), //sizedbox
-
-            SizedBox(height: 30),
-          ],
-        ),
-
-          ),
             ],
+          ),
         ),
-      ),
       ),
     );
   }
