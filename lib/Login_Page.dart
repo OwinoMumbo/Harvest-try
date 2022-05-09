@@ -1,6 +1,5 @@
 import 'dart:convert';
-// ignore: unused_import
-//import 'dart:ffi';
+import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,15 +14,13 @@ import 'Register_Page.dart';
 import 'HomePage.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
-
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
   _Login createState() => _Login();
 }
-
-var email, password;
+var email,password;
 var ValidResponse;
 
 bool te = false;
@@ -51,6 +48,7 @@ bool te = false;
 // }
 
 class _Login extends State<Login> {
+
   //TextController to read text entered in text field
   TextEditingController getEmail = TextEditingController();
   TextEditingController confirmpassword = TextEditingController();
@@ -64,7 +62,8 @@ class _Login extends State<Login> {
         title: const Text("Login Page"),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 0),
+        padding: const EdgeInsets.only(
+            top: 0),
         child: Form(
           key: _globalkey,
           child: Center(
@@ -83,14 +82,13 @@ class _Login extends State<Login> {
                         child: TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           controller: getEmail,
-                          decoration:
-                              buildInputDecoration(Icons.email, "Email"),
+                          decoration: buildInputDecoration(Icons.email, "Email"),
                           validator: (String? value) {
                             if (value!.isEmpty) {
                               return 'An E-mail is required to Login.';
                             }
                             if (!RegExp(
-                                    "^[a-z,A-Z,0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                                "^[a-z,A-Z,0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                                 .hasMatch(value)) {
                               return 'Please a valid E-mail';
                             }
@@ -99,6 +97,7 @@ class _Login extends State<Login> {
                           // onSaved: (String? value) {
                           //   email = value;
                           // },
+
                         ),
                       ),
 
@@ -110,7 +109,7 @@ class _Login extends State<Login> {
                           obscureText: true,
                           keyboardType: TextInputType.text,
                           decoration:
-                              buildInputDecoration(Icons.lock, "Password"),
+                          buildInputDecoration(Icons.lock, "Password"),
                           validator: (String? value) {
                             if (value!.isEmpty) {
                               return 'Please re-enter password';
@@ -139,44 +138,21 @@ class _Login extends State<Login> {
                                   bool te = true;
 
                                   var finalResponse;
-                                  http.Response response = await http.post(
-                                      Uri.parse(
-                                          "http://10.100.15.123/login.php"),
+                                  http.Response response = await http.post(Uri.parse("http://10.100.15.123/login.php"),
                                       body: ({
-                                        'email': email,
-                                        'password': password
-                                      }));
-                                  if (response.statusCode == 200) {
+                                        'email' : email,
+                                        'password' : password
+                                      }
+                                      )
+                                  );
+                                  if(response.statusCode == 200){
                                     finalResponse = response.body;
-                                    print('startValue');
-                                    print(finalResponse
-                                        .toString()
-                                        .characters
-                                        .characterAt(1));
-                                    print(finalResponse
-                                            .toString()
-                                            .characters
-                                            .characterAt(1) !=
-                                        'I');
-                                    if (finalResponse
-                                            .toString()
-                                            .characters
-                                            .characterAt(1) ==
-                                        'I' /*||finalResponse.toString().characters.characterAt(1) != '{'*/) {
+                                    if(finalResponse.toString().characters.characterAt(1) == 'I'){
                                       print('helloworld');
                                       te = false;
-                                      Fluttertoast.showToast(
-                                        msg: finalResponse,
-                                        toastLength: Toast.LENGTH_LONG,
-                                        backgroundColor: Colors.red,
-                                        gravity: ToastGravity.BOTTOM,
-                                      );
+                                      Fluttertoast.showToast(msg: finalResponse,toastLength: Toast.LENGTH_LONG, backgroundColor: Colors.red,gravity: ToastGravity.BOTTOM,);
                                     }
-                                    if (finalResponse
-                                            .toString()
-                                            .characters
-                                            .characterAt(1) !=
-                                        '{') {
+                                    if(finalResponse.toString().characters.characterAt(1) != '{'){
                                       ValidResponse = response.body;
                                     }
                                   }
@@ -187,14 +163,13 @@ class _Login extends State<Login> {
                                   print('the following is bool');
                                   print(te);
 
-                                  if (te == true) {
+                                  if(te == true){
+
                                     print('the following is json data');
                                     var jd = json.decode(ValidResponse);
                                     print(jd['farmer_id'][0]);
-                                    final prefs =
-                                        await SharedPreferences.getInstance();
-                                    await prefs.setString(
-                                        'farmer_id', jd['farmer_id'][0]);
+                                    final prefs = await SharedPreferences.getInstance();
+                                    await prefs.setString('farmer_id',jd['farmer_id'][0]);
 
                                     Navigator.push(
                                       context,
@@ -204,19 +179,22 @@ class _Login extends State<Login> {
                                   }
 
                                   return;
-                                } else {
+                                }
+                                else {
                                   print("UnSuccessfull");
                                 }
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0),
-                                  side: const BorderSide(
-                                      color: Colors.green, width: 2)),
+                                  side:
+                                  const BorderSide(color: Colors.green, width: 2)),
                               textColor: Colors.white,
                               child: const Text("LOGIN"),
                               // style: ElevatedButton.styleFrom(primary: Colors.black26,textStyle: const TextStyle(color: Colors.black,fontSize: 20,))
                             )),
                       ),
+                      
+                      SizedBox(height: 30),
 
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
@@ -235,8 +213,8 @@ class _Login extends State<Login> {
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0),
-                                  side: const BorderSide(
-                                      color: Colors.green, width: 2)),
+                                  side:
+                                  const BorderSide(color: Colors.green, width: 2)),
                               textColor: Colors.white,
                               child: const Text("SIGN UP"),
                               // style: ElevatedButton.styleFrom(primary: Colors.black26,textStyle: const TextStyle(color: Colors.black,fontSize: 20,))

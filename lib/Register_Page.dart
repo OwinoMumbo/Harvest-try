@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:harvest/Deco_design.dart';
 import 'package:harvest/Login_Page.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Constant_Colors.dart' as colors;
 
 import 'InputboxClass.dart';
@@ -77,9 +80,9 @@ class _RegisterPage extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 70,
-                  child: const Text("LOGO"),
+                  child: Text("LOGO"),
                 ),
                 Padding(
                   padding:
@@ -118,7 +121,7 @@ class _RegisterPage extends State<RegisterPage> {
                   padding:
                   const EdgeInsets.only(bottom: 15, left: 10, right: 10),
                   child: TextFormField(
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.emailAddress,
                     controller: getEmail,
                     decoration: buildInputDecoration(Icons.email, "Email"),
                     validator: (String? value) {
@@ -140,7 +143,7 @@ class _RegisterPage extends State<RegisterPage> {
                   padding:
                   const EdgeInsets.only(bottom: 15, left: 10, right: 10),
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.phone,
                     controller: getContactNo,
                     decoration: buildInputDecoration(Icons.phone, "Phone No"),
                     validator: (String? value) {
@@ -156,7 +159,7 @@ class _RegisterPage extends State<RegisterPage> {
                   const EdgeInsets.only(bottom: 15, left: 10, right: 10),
                   child: TextFormField(
                     controller: password,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.visiblePassword,
                     decoration: buildInputDecoration(Icons.lock, "Password"),
                     validator: (String? value) {
                       if (value!.isEmpty) {
@@ -196,7 +199,7 @@ class _RegisterPage extends State<RegisterPage> {
                   height: 50,
                   child: RaisedButton(
                     color: Colors.green,
-                    onPressed: () {
+                    onPressed: () async {
                       if (_globalkey.currentState!.validate()) {
 
                         fistName = getName.text;
@@ -205,21 +208,39 @@ class _RegisterPage extends State<RegisterPage> {
                         phone = getContactNo.text;
                         finalPassword = confirmpassword.text;
 
-                        print(fistName);
-                        print(lastName);
+                        final response = await http.post(Uri.parse("http://10.100.15.123/register.php"),
+                          body:({
+                            'email': email,
+                            'name': fistName,
+                            'surname' : lastName,
+                            'contact' : phone,
+                            'password' :finalPassword
+                          })
+                        );
 
-                        doRegister();
+                        if(response.statusCode == 200){
+                          if(response.body.startsWith('Email')){
+                            Fluttertoast.showToast(msg: response.body,toastLength: Toast.LENGTH_SHORT, backgroundColor: Colors.red,gravity: ToastGravity.BOTTOM,);
+                          }
+                          else{
+                            var data = json.decode(response.body);
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.setString('farmer_id',data['farmer_id'][0]);
 
-                        if(ValidResponse != null){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
-                          );
+                            Fluttertoast.showToast(msg: 'Successfuly registered',toastLength: Toast.LENGTH_SHORT, backgroundColor: Colors.red,gravity: ToastGravity.BOTTOM,);
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage()),);
+
+                          }
                         }
 
+                        // if(ValidResponse != null){
+                        //   Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage()),);
+                        // }
+
                         return;
-                      } else {
-                        print("UnSuccessfull");
+                      } 
+                      else {
+                        Fluttertoast.showToast(msg: 'Something went wrong',toastLength: Toast.LENGTH_SHORT, backgroundColor: Colors.red,gravity: ToastGravity.BOTTOM,);
                       }
                     },
                     shape: RoundedRectangleBorder(
