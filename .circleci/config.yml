@@ -7,14 +7,14 @@ jobs:
   build:
     working_directory: ~/project
     docker:
-      - image: cirrusci/flutter
+      - image: "cirrusci/flutter"
     steps:
       - checkout
       - run: flutter main.dart
   test:
     working_directory: ~/project
     docker:
-      - image: cirrusci/flutter
+      - image: "cirrusci/flutter"
     steps:
       - checkout
       - run: flutter widget_test.dart
