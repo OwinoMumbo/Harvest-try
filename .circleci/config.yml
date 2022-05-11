@@ -14,7 +14,7 @@ jobs:
       - image: cirrusci/flutter
     steps:
       - checkout
-      - run: flutter widger_test.dart
+      - run: flutter widget_test.dart
 workflows:
   build_and_test:
     jobs:
