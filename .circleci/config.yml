@@ -1,0 +1,27 @@
+version 2.1
+
+orbs:
+  flutter: circleci/flutter@1.1.0
+
+  jobs:
+    build:
+      workong_directory: ~/circleci-flutter
+      docker:
+        -image: cirrusci/flutter
+      steps:
+        -checkout
+        -run: flutter main.dart
+      test:
+        working_directory:  ~/circleci-flutter
+        docker:
+          -image: cirrusci/flutter
+        steps:
+          -checkout
+          -run: flutter widget_test.dart
+  workflows:
+    build_and_test:
+      jobs:
+        -build
+        -test:
+          requires:
+            -build
