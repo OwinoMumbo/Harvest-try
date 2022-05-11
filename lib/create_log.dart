@@ -2,7 +2,9 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:harvest/HomePage.dart';
 import 'package:harvest/ViewLog.dart';
+import 'package:harvest/addtolog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'join_log.dart';
@@ -78,33 +80,32 @@ class _createL extends State<createL>{
 								),
 								onPressed: () async {
 									if (_globalkey.currentState!.validate()) {
-									LogName = logname.text;
-		
-		
-									final prefs = await SharedPreferences.getInstance();
-									final String? farmer_id = prefs.getString('farmer_id');     
-		
-									var finalRes;
-									http.Response response = await http.post(Uri.parse("http://10.100.15.123/createlog.php"),
-										body: ({
-											'logname': LogName,
-											'farmerid' : farmer_id
-										})
-		
-									);
-									if(response.statusCode == 200){
-										finalRes = response.body;
-										print(finalRes);
+                    LogName = logname.text;
+      
+      
+                    final prefs = await SharedPreferences.getInstance();
+                    final String? farmer_id = prefs.getString('farmer_id');     
+      
+                    var finalRes;
+                    http.Response response = await http.post(Uri.parse("http://10.100.15.123/createlog.php"),
+                      body: ({
+                        'logname': LogName,
+                        'farmerid' : farmer_id
+                      })
+      
+                    );
+                    if(response.statusCode == 200){
+                      finalRes = response.body;
+                      print(finalRes);
 
-										if(finalRes.toString().characters.characterAt(1) == 'C'){
-										Navigator.push(context,
-										MaterialPageRoute(builder: (context) {
-											return const ViewLog();
-											},
-											),
-										);
-										}
-									}
+                      print(finalRes.toString().characters.characterAt(1));
+
+                      if(response.body.toString().characters.characterAt(0) != 'C'){
+                        Fluttertoast.showToast(msg: 'Log is successfuly created you can go to view log and start adding',toastLength: Toast.LENGTH_SHORT, backgroundColor: Colors.red,gravity: ToastGravity.BOTTOM,);
+                        Navigator.push(context,MaterialPageRoute(builder: (context) => const HomePage()),);
+                      
+                      }
+                    }
 		
 									
 									}
