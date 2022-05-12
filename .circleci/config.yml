@@ -90,10 +90,12 @@ workflows:
       - integration_test_ios
       - distribute_ios:
           context:
+          - org-global
            - mobile
       - integration_test_android
       - distribute_android:
-          context: 
+          context:
+          - org-global          - 
            - mobile
 
 
