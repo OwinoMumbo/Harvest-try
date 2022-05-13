@@ -16,9 +16,7 @@ jobs:
     steps:
       - checkout
       - run: flutter doctor
-      - run:
-         name: Get flutter packages
-         command: flutter packages pub get
+      - run: flutter doctor
       - flutter-orb/install_sdk_and_pub:
           cache-version: machine
           flutter_version: 2.16.1
@@ -50,6 +48,9 @@ jobs:
           app-dir: android
           key: android
       - run:
+          name: Get flutter packages
+          command: flutter packages pub get
+      - run:
           command: bundle exec fastlane distribute_debug
           working_directory: android
 
@@ -62,9 +63,7 @@ jobs:
       - flutter-orb/install_sdk_and_pub:
           flutter_version: 2.2.3
       - flutter-orb/install_ios_pod
-      - run:
-          name: Get flutter packages
-          command: flutter packages pub get
+      - run: flutter doctor
       - run: flutter doctor
       - run:
           name: Integration Test
@@ -83,6 +82,9 @@ jobs:
       - ruby/install-deps:
           app-dir: ios
           key: ios
+      - run:
+          name: Get flutter packages
+          command: flutter packages pub get
       - run:
           command: bundle exec fastlane distribute_debug
           working_directory: ios
