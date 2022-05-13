@@ -9,7 +9,6 @@ jobs:
     executor: flutter
     steps:
       - checkout
-      - run: flutter doctor
       - run:
           name: Get flutter packages
           command: flutter packages pub get
