@@ -1,23 +1,35 @@
-version: 2
-orb: 
-  flutter: circleci/flutter@1.1.0
+version: 2.1
 
-jobs:
-  build:
+executors:
+  flutter:
     docker:
-      - image: cimg/base:stable
+      - image: cirrusci/flutter
+jobs:
+  test:
+    executor: flutter
     steps:
       - checkout
-      - run: flutter doctor
-    # fetching code from repo
-Fetch-code:
-  docker:
-    - image: cirrus/flutter
-  steps:
-    - checkout
-    - run: flutter doctor
+      - run:
+          name: Get flutter packages
+          command: flutter packages pub get
+      - run: 
+          name: Flutter test
+          command: flutter run
+
+  build:
+    executor: flutter
+    steps:
+      - checkout
+      - run:
+          name: Build Android
+          command: flutter build appbundle --debug
+      - store_artifacts:
+          path: build/app/outputs/bundle/debug
 workflows:
   version: 2
-  dart workflow: # this is the name of our workflow
-    jobs: # and here we list the jobs we are going to run.
-      - build
+  flutter-build:
+    jobs:
+      - test
+      - build:
+         requires:
+           - test
