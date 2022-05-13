@@ -10,13 +10,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:harvest/main.dart';
 
-void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     tester.runAsync(() async{
       when(valueRepository.getValues())
         .thenAnswer((_) => Future.delayed(Duration(seconds: 30), ()=> []));
-    await tester.pumpWidget(withApp(ValueListPage(
+    await tester.pumpWidget(MyApp(ValueListPage(
       valueRepository: valueRepository,
     )));
     
@@ -25,5 +24,6 @@ void main() {
       
       expect(find.byType(CircularProgressIndicator), findOneWidget);
     
-  });
-}
+  },);
+  },
+   );
