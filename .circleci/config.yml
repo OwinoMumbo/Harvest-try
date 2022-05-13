@@ -1,4 +1,6 @@
-version: 2.1
+version: 2
+orb: 
+  flutter: circleci/flutter@1.1.0
 
 jobs:
   build:
@@ -10,10 +12,10 @@ jobs:
     # fetching code from repo
 Fetch-code:
   docker:
-    -image:cirrus/flutter
+    - image: cirrus/flutter
   steps:
-    -checkout
-    -run:flutter doctor
+    - checkout
+    - run: flutter doctor
 workflows:
   version: 2
   dart workflow: # this is the name of our workflow
