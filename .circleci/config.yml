@@ -12,9 +12,6 @@ jobs:
       - run:
           name: Get flutter packages
           command: flutter packages pub get
-      - run: 
-          name: Flutter test
-          command: flutter test
 
   build:
     executor: flutter
