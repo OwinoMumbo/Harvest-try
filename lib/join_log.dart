@@ -36,15 +36,15 @@ class _joinL extends State<joinL>{
                 child: Column(
                   children: [
                     SizedBox(height: 10),
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextFormField(
+                      decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText:"Enter Log Name"
                       ),
                     ),
                     SizedBox(height: 10),
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextFormField(
+                      decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText:"Enter Log code"
                       ),

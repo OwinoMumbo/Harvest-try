@@ -10,6 +10,8 @@ import 'chart_model.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'package:searchfield/searchfield.dart';
+
 
 class filter_page extends StatefulWidget{
 
@@ -24,18 +26,22 @@ class filter_page extends StatefulWidget{
 
 class _filter extends State<filter_page> {
 
-  final List<ProduceTimeline>data=[ //some data to display on the bar graph
-    ProduceTimeline(months: "jan", quantity: 50, barColor: charts.ColorUtil.fromDartColor(Colors.green)),
-    ProduceTimeline(months:"Feb",quantity:10, barColor: charts.ColorUtil.fromDartColor(Colors.green)),
-    ProduceTimeline(months: "Mar", quantity: 30, barColor: charts.ColorUtil.fromDartColor(Colors.green)),
-    ProduceTimeline(months:"Apr",quantity:15, barColor: charts.ColorUtil.fromDartColor(Colors.green)),
+  // final List<ProduceTimeline>data=[ //some data to display on the bar graph
+  //   ProduceTimeline(months: "jan", quantity: 50, barColor: charts.ColorUtil.fromDartColor(Colors.green)),
+  //   ProduceTimeline(months:"Feb",quantity:10, barColor: charts.ColorUtil.fromDartColor(Colors.green)),
+  //   ProduceTimeline(months: "Mar", quantity: 30, barColor: charts.ColorUtil.fromDartColor(Colors.green)),
+  //   ProduceTimeline(months:"Apr",quantity:15, barColor: charts.ColorUtil.fromDartColor(Colors.green)),
 
-  ];
+  // ];
+
+  final List<ProduceTimeline>data = [];
+
+  
 
 
-  String dropdownvalue1="Select Months";
-  String dropdownvalue2='Select Food';
-  String dropdownvalue3='Select Type';
+  String monthValue="Select Months";
+  String foodValue='Select Food';
+  String typeValue='Select Type';
 
   var Type=[
     'Select Type',
@@ -115,7 +121,7 @@ class _filter extends State<filter_page> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-        backgroundColor: Colors.white70,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text(" My Log"),
         ),
@@ -136,6 +142,7 @@ class _filter extends State<filter_page> {
                 children: <Widget>[ //all under of expansion tile, i.e dropdowns
                   Column(
                     children: <Widget>[
+                      
                       Row(
                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,//spaces between widgets
                        children:<Widget> [
@@ -147,7 +154,7 @@ class _filter extends State<filter_page> {
                              )),
 
                          DropdownButton(   //for month
-                               value: dropdownvalue1,
+                               value: monthValue,
                                icon: const Icon(Icons.keyboard_arrow_down),
 
                                items: month.map((String item) {
@@ -159,7 +166,7 @@ class _filter extends State<filter_page> {
 
                                onChanged: (String? newValue) {
                                  setState(() {
-                                   dropdownvalue1 = newValue!;
+                                   monthValue = newValue!;
                                  });
                                }
                            ),
@@ -177,7 +184,7 @@ class _filter extends State<filter_page> {
 
 
                   DropdownButton(  //for Type
-                      value: dropdownvalue3,
+                      value: typeValue,
                       icon: const Icon(Icons.keyboard_arrow_down),
                       items: Type.map((String item) {
                         return DropdownMenuItem(
@@ -187,14 +194,14 @@ class _filter extends State<filter_page> {
                       }).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
-                          dropdownvalue3 = newValue!;
+                          typeValue = newValue!;
                         });
                       }
                   ),
 
 
                   DropdownButton( //for the food list display
-                      value: dropdownvalue2,
+                      value: foodValue,
                       icon: const Icon(Icons.keyboard_arrow_down),
 
                       items: food.map((String item) {
@@ -206,7 +213,7 @@ class _filter extends State<filter_page> {
 
                       onChanged: (String? newValue) {
                         setState(() {
-                          dropdownvalue2 = newValue!;
+                          foodValue = newValue!;
                         });
                       }
                   ),
@@ -263,14 +270,39 @@ class _filter extends State<filter_page> {
                             ),
                             onPressed: () async {
 
+                              data.clear();
+
                               final prefs = await SharedPreferences.getInstance();
                               String farmer_id = prefs.getString('farmer_id')!;
+                              String log_id = prefs.getString('log_id')!;
                               print('this is farmer id');
                               print(farmer_id);
 
-                              http.Response response = await http.post(Uri.parse("http://10.100.15.123/viewlogs.php"),
+                              print('this is log id');
+                              print(log_id);
+
+                              var monthV;
+
+                              if(monthValue == 'Select Months'){
+                                monthV = '7';
+                              }
+                              else if(monthValue == 'This month'){
+                                monthV = '30';
+                              }
+                              else if(monthValue == 'Last 3 months'){
+                                monthV = '90';
+                              }
+                              else if(monthValue == 'Last 6 months'){
+                                monthV = '180';
+                              }
+                              else if(monthValue == 'Year'){
+                                monthV = '365';
+                              }
+                              http.Response response = await http.post(Uri.parse("http://10.100.15.123/graph.php"),
                               body: ({
-                                'farmerid' : farmer_id
+                                'items' : foodValue,
+                                'log_id': log_id,
+                                'period' : monthV
                                 })
                               ); 
 
@@ -280,11 +312,25 @@ class _filter extends State<filter_page> {
                                   List list = json.decode(response.body);
                                   print(list);
 
+
+
+                                  for(var i =0;i < list.length ;i++){
+
+                                    data.add(ProduceTimeline(months: list[i]['date'], quantity: int.parse(list[i]['weight']), barColor: charts.ColorUtil.fromDartColor(Colors.green)));
+
+                                    print('added');
+
+                                  }
+                                  setState(() {});
+                                  
+
+
+
                                 }
                               }
                               
                             },
-                            child: const Text("")),
+                            child: const Text("Apply flitter")),
                       ),
                     ),
           ],

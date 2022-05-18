@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harvest/addtolog.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'MyLog.dart';
@@ -97,13 +98,15 @@ final List logData;
             padding: const EdgeInsets.all(8.0),
             child: DataTable(
               columns: const [
-                DataColumn(label: Text('FOOD',textScaleFactor: 2.0,)),
-                DataColumn(label: Text('WEIGHT',textScaleFactor: 2.0,)),
+                DataColumn(label: Text('FOOD',textScaleFactor: 1.6,)),
+                DataColumn(label: Text('WEIGHT',textScaleFactor: 1.6,)),
+                DataColumn(label: Text('DATE',textScaleFactor: 1.6,)),
 
             ],
-            rows: logData.map((e) => DataRow(cells: [
-              DataCell(Text(e['items'],textScaleFactor: 1.2,)),
-              DataCell(Text(e['weight'] + ' g',textScaleFactor: 1.2,))
+            rows: logData.reversed.map((e) => DataRow(cells: [
+              DataCell(Text(e['items'],textScaleFactor: 1,)),
+              DataCell(Text(e['weight'] + ' g',textScaleFactor: 1,)),
+              DataCell(Text(e['date'] == DateFormat('yyyy-MM-dd').format(DateTime.now()).toString() ? 'Today' : e['date'],textScaleFactor: 0.8,))
             ])
             
             ).toList(),
