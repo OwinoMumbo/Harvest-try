@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:harvest/Deco_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:harvest/controll/inputValidator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:toast/toast.dart';
 import 'Constant_Colors.dart' as colors;
@@ -14,6 +15,7 @@ import 'Register_Page.dart';
 import 'HomePage.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:harvest/controll/inputValidator.dart';
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -24,28 +26,7 @@ var email,password;
 var ValidResponse;
 
 bool te = false;
-// Future singin() async{
-//   var finalResponse;
-//   http.Response response = await http.post(Uri.parse("http://10.100.15.123/login.php"),
-//       body: ({
-//         'email' : email,
-//         'password' : password
-//       }
-//       )
-//   );
-//   if(response.statusCode == 200){
-//     finalResponse = response.body;
-//     if(finalResponse.startsWith("I")){
-//       Fluttertoast.showToast(msg: finalResponse,toastLength: Toast.LENGTH_LONG, backgroundColor: Colors.red,gravity: ToastGravity.BOTTOM,);
-//     }
-//     else{
-//       ValidResponse = response.body;
-//     }
-//   }
-//   else{
-//     finalResponse = "error";
-//   }
-// }
+
 
 class _Login extends State<Login> {
 
@@ -83,17 +64,8 @@ class _Login extends State<Login> {
                           keyboardType: TextInputType.emailAddress,
                           controller: getEmail,
                           decoration: buildInputDecoration(Icons.email, "Email"),
-                          validator: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'An E-mail is required to Login.';
-                            }
-                            if (!RegExp(
-                                "^[a-z,A-Z,0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                                .hasMatch(value)) {
-                              return 'Please a valid E-mail';
-                            }
-                            return null;
-                          },
+                          //onSaved: (value) => email = getEmail.text,
+                          validator: (String? value) => inputValidator.validateEmail(value.toString().trim())
                           // onSaved: (String? value) {
                           //   email = value;
                           // },
