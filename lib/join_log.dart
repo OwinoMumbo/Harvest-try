@@ -4,13 +4,7 @@
 import 'package:flutter/material.dart';
 
 
-class CountFarmers {
-  int value = 0;
 
-  void increment() => value++;
-
-  void decrement() => value--;
-}
 class joinL extends StatefulWidget{
 
   const joinL({Key? key}) : super(key: key);
