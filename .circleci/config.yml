@@ -1,23 +1,12 @@
-version: 2.1 # Use version 2.1 to enable Orb usage.
-
-orbs:
-  
-  win: circleci/windows@2.2.0 # The Windows orb give you everything you need to start using the Windows executor.
-
+version: 2.1
 jobs:
-  build-and-test: # name of your job
-    executor: win/default # executor type
-
+  build:
+    docker:
+      - image: cirrusci/flutter
     steps:
-      # Commands are run in a Windows virtual machine environment
       - checkout
-      - run: Write-Host 'Hello, Windows'
-      - run: 
-        command:
-          flutter test test/counter_test.dart
-
-workflows:
-  sample: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
-    jobs:
-      - build-and-test
+      - run: flutter doctor
+      - run: flutter test 
+      - run: flutter build apk --release
+      - store_artifacts:
+            path: build/app/outputs/flutter-apk/app-release.apk
