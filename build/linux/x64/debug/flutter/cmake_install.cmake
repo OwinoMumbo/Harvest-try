@@ -1,8 +1,8 @@
-# Install script for directory: /home/tshavhalufu/2022 SchoolProjects/SD/GunPointCoders/harvest/linux/flutter
+# Install script for directory: /home/s/Desktop/Year 3/Year 3/Year 3/COMS 3009A SD/Project/Updated Project/harvest/linux/flutter
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/tshavhalufu/2022 SchoolProjects/SD/GunPointCoders/harvest/build/linux/x64/debug/bundle")
+  set(CMAKE_INSTALL_PREFIX "/home/s/Desktop/Year 3/Year 3/Year 3/COMS 3009A SD/Project/Updated Project/harvest/build/linux/x64/debug/bundle")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

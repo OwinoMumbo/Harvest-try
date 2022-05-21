@@ -1,3 +1,2 @@
-2022/04/10-02:02:52.708 d2b3 Reusing MANIFEST /tmp/flutter_tools.NRCYPS/flutter_tools_chrome_device.NOPOXY/Default/GCM Store/Encryption/MANIFEST-000001
-2022/04/10-02:02:52.708 d2b3 Recovering log #3
-2022/04/10-02:02:52.708 d2b3 Reusing old log /tmp/flutter_tools.NRCYPS/flutter_tools_chrome_device.NOPOXY/Default/GCM Store/Encryption/000003.log 
+2022/05/20-22:40:34.186 8edd Creating DB /tmp/flutter_tools.PVJETO/flutter_tools_chrome_device.OJHAOK/Default/GCM Store/Encryption since it was missing.
+2022/05/20-22:40:34.202 8edd Reusing MANIFEST /tmp/flutter_tools.PVJETO/flutter_tools_chrome_device.OJHAOK/Default/GCM Store/Encryption/MANIFEST-000001

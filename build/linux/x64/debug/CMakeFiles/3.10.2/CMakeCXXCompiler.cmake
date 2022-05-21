@@ -18,9 +18,9 @@ set(CMAKE_CXX_SIMULATE_VERSION "")
 
 
 set(CMAKE_AR "/snap/flutter/current/usr/bin/ar")
-set(CMAKE_CXX_COMPILER_AR "/usr/bin/llvm-ar-6.0")
+set(CMAKE_CXX_COMPILER_AR "CMAKE_CXX_COMPILER_AR-NOTFOUND")
 set(CMAKE_RANLIB "/snap/flutter/current/usr/bin/ranlib")
-set(CMAKE_CXX_COMPILER_RANLIB "/usr/bin/llvm-ranlib-6.0")
+set(CMAKE_CXX_COMPILER_RANLIB "CMAKE_CXX_COMPILER_RANLIB-NOTFOUND")
 set(CMAKE_LINKER "/snap/flutter/current/usr/bin/ld")
 set(CMAKE_COMPILER_IS_GNUCXX )
 set(CMAKE_CXX_COMPILER_LOADED 1)
@@ -71,5 +71,5 @@ endif()
 
 
 set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES "blkid;gcrypt;lzma;pthread;dl;stdc++;m;gcc_s;gcc;c;gcc_s;gcc")
-set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "/snap/flutter/current/usr/lib/gcc/x86_64-linux-gnu/8;/snap/flutter/current/usr/lib/x86_64-linux-gnu;/snap/flutter/current/usr/lib;/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/x86_64-linux-gnu;/lib/x86_64-linux-gnu;/lib64;/usr/lib;/snap/flutter/111/usr/lib/llvm-6.0/lib;/lib")
+set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "/snap/flutter/current/usr/lib/gcc/x86_64-linux-gnu/8;/snap/flutter/current/usr/lib/x86_64-linux-gnu;/snap/flutter/current/usr/lib;/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/x86_64-linux-gnu;/usr/lib64;/lib/x86_64-linux-gnu;/lib64;/usr/lib;/snap/flutter/111/usr/lib/llvm-6.0/lib;/lib")
 set(CMAKE_CXX_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")

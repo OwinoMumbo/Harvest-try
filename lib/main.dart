@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:harvest/Login_Page.dart';
 import 'package:harvest/Register_Page.dart';
 import 'package:harvest/addtolog.dart';
+import 'package:harvest/controll/atlas_page.dart';
 import 'package:harvest/create_log.dart';
 import 'package:harvest/join_log.dart';
 
